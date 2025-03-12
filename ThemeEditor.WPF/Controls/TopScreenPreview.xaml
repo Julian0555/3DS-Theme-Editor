@@ -172,36 +172,6 @@
             DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Theme}"
             Width="412px" Height="240px">
         <!-- Background -->
-        <renderers:TopWallpaperRenderer x:Name="TopBackground" Theme="{Binding Path=.}" IsEnabled="True">
-            <renderers:TopWallpaperRenderer.Resources>
-                <ImageBrush ImageSource="../Resources/TOPALT_DEFMASK.png" x:Key="TopDefBrush"/>
-                <templating:NullConverter x:Key="TextureDefaulter" NullValue="../Resources/TOPALT_DEFMASK.png" />
-
-                <ImageBrush ImageSource="{Binding Path=Textures.Top.Bitmap, Converter={StaticResource TextureDefaulter}}" x:Key="TopBrush"/>
-                <ImageBrush ImageSource="{Binding Path=Textures.TopAlt.Bitmap, Converter={StaticResource TextureDefaulter}}" x:Key="TopAltBrush"/>
-
-                <templating:SwitchConverter x:Key="TextureMovSwitchConverter" DefaultValue="{StaticResource TopDefBrush}">
-                    <templating:SwitchConverterCase Case="{x:Static enums:TopDrawType.SolidColorTexture}" Value="{StaticResource TopBrush}" />
-                </templating:SwitchConverter>
-                <templating:SwitchConverter x:Key="TextureFixSwitchConverter" DefaultValue="{StaticResource TopDefBrush}">
-                    <templating:SwitchConverterCase Case="{x:Static enums:TopDrawType.SolidColorTexture}" Value="{StaticResource TopAltBrush}" />
-                </templating:SwitchConverter>
-            </renderers:TopWallpaperRenderer.Resources>
-            <renderers:TopWallpaperRenderer.Effect>
-                <effects:WarpEffect 
-                    Offset="{Binding ElementName=TopBackground, Path=ShaderOffset, UpdateSourceTrigger=PropertyChanged}" 
-                    Enable="{Binding ElementName=TopBackground, Path=ShaderEnable, UpdateSourceTrigger=PropertyChanged}" 
-                    Aspect="2"
-                    PatternOpacity="{Binding Path=Colors.TopBackground.TextureOpacity}"
-                    AlternateOpacity="{Binding Path=Colors.TopBackground.AlternateOpacity}"
-                    GrayLevel="{Binding Path=Colors.TopBackground.GradientColor}"
-                    Gradient="{Binding Path=Colors.TopBackground.Gradient}"
-                    FixedBrush="{Binding Path=Flags.TopDrawType, Converter={StaticResource TextureFixSwitchConverter}}"
-                    MovingBrush="{Binding Path=Flags.TopDrawType, Converter={StaticResource TextureMovSwitchConverter}}"
-                    >
-                </effects:WarpEffect>
-            </renderers:TopWallpaperRenderer.Effect>
-        </renderers:TopWallpaperRenderer>
 
         <!-- System Bar -->
         <Canvas Width="412px" Height="20px">

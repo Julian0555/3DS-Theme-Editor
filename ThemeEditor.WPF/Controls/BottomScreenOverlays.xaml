@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ThemeEditor.WPF.Controls.BottomOverlaysPreview"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,6 +8,7 @@
              xmlns:controls="clr-namespace:ThemeEditor.WPF.Controls"
              xmlns:templating="clr-namespace:ThemeEditor.WPF.Templating"
              xmlns:markup="clr-namespace:ThemeEditor.WPF.Markup"
+             xmlns:Effects="clr-namespace:ThemeEditor.WPF.Effects" xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Class="ThemeEditor.WPF.Controls.BottomOverlaysPreview"
              mc:Ignorable="d" ClipToBounds="True"
              d:DesignHeight="240" d:DesignWidth="320">
     <UserControl.Resources>
@@ -15,115 +16,411 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="PreviewResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
+            <Style x:Key="CloseOff" TargetType="FrameworkElement">
+                <Style.Triggers>
+                    <DataTrigger Binding="{markup:Setting Path=Preview_CloseToggle}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="CloseOn" TargetType="FrameworkElement">
+                <Style.Triggers>
+                    <DataTrigger Binding="{markup:Setting Path=Preview_CloseToggle}" Value="True">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="ButtonPressed" TargetType="Image">
+                <Setter Property="Source" Value="/Controls/Resources/BottomButton/LncBtmBtn_11.png"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{markup:Setting Path=Preview_PressedToggle}" Value="True">
+                        <Setter Property="Margin" Value="0,1,0,0"/>
+                        <Setter Property="Source" Value="/Controls/Resources/BottomButton/LncBtmBtn_12.png"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Canvas
-        DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Theme}"
-        Width="320" Height="240">
+        DataContext="{Binding Theme, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+        Width="320" Height="240" RenderTransformOrigin="1,0.5">
         <!-- Open_Close -->
-        <Canvas>
-            <Canvas Canvas.Top="240" Canvas.Left="106">
-                <Path Data="{StaticResource OpenButtonGeometry}"
-                      Style="{StaticResource OpenStyleButton}" />
-                <Path Data="{StaticResource OpenButtonGeometry}"
-                      Style="{StaticResource OpenStyleButtonGlowBase}" />
-                <Path Data="{StaticResource OpenButtonGeometry}"
-                      Style="{StaticResource OpenStyleButtonGlow}" />
-                <Path Data="{StaticResource OpenButtonGeometry}"
-                      Style="{StaticResource OpenStyleButtonStroke}" />
-            </Canvas>
-            <Canvas Canvas.Top="240" Canvas.Left="0">
-                <Path Data="{StaticResource CloseButtonGeometry}"
-                      Style="{StaticResource CloseStyleButton}" />
-                <Path Data="{StaticResource CloseButtonGeometry}"
-                      Style="{StaticResource CloseStyleButtonGlowBase}" />
-                <Path Data="{StaticResource CloseButtonGeometry}"
-                      Style="{StaticResource CloseStyleButtonGlow}" />
-                <Path Data="{StaticResource CloseButtonGeometry}"
-                      Style="{StaticResource CloseStyleButtonStroke}" />
-            </Canvas>
-            <Canvas Canvas.Top="240" Canvas.Left="0">
-                <Canvas.Resources>
-                    <templating:BooleanConverter x:Key="VisibleOnTrueConverter"
-                                                 TrueValue="{x:Static Visibility.Visible}"
-                                                 FalseValue="{x:Static Visibility.Hidden}" />
-                    <templating:BooleanConverter x:Key="VisibleOnFalseConverter"
-                                                 TrueValue="{x:Static Visibility.Hidden}"
-                                                 FalseValue="{x:Static Visibility.Visible}" />
-                </Canvas.Resources>
-                <Grid Width="60" Height="26" Canvas.Top="-26" Canvas.Left="50">
-                    <Grid.Visibility>
-                        <Binding Source="{x:Static sett:Settings.Default}" Path="Preview_CloseToggle"
-                                 Converter="{StaticResource VisibleOnTrueConverter}" />
-                    </Grid.Visibility>
-                    <controls:TextPath Text="Usagi" Style="{StaticResource CloseStyleTextShadow}" />
-                    <controls:TextPath Text="Usagi" Style="{StaticResource CloseStyleText}" />
-                </Grid>
-                <Grid Height="26" Canvas.Top="-26" Canvas.Left="111">
-                    <Grid.Visibility>
-                        <Binding Source="{x:Static sett:Settings.Default}" Path="Preview_CloseToggle"
-                                 Converter="{StaticResource VisibleOnTrueConverter}" />
-                    </Grid.Visibility>
-                    <controls:TextPath Text="3DS Theme Editor" Style="{StaticResource OpenStyleTextShadow}" />
-                    <controls:TextPath Text="3DS Theme Editor" Style="{StaticResource OpenStyleText}" />
-                </Grid>
-                <Grid Height="26" Canvas.Top="-26" Canvas.Left="0" Width="320">
-                    <Grid.Visibility>
-                        <Binding Source="{x:Static sett:Settings.Default}" Path="Preview_CloseToggle"
-                                 Converter="{StaticResource VisibleOnFalseConverter}" />
-                    </Grid.Visibility>
-                    <controls:TextPath Text="Usagi 3DS Theme Editor" Style="{StaticResource OpenStyleTextShadow}" />
-                    <controls:TextPath Text="Usagi 3DS Theme Editor" Style="{StaticResource OpenStyleText}" />
-                </Grid>
-            </Canvas>
-        </Canvas>
+        <!-- Open_Close -->
         <!-- Corners -->
-        <Canvas Canvas.Top="0" Canvas.Left="0" SnapsToDevicePixels="True" UseLayoutRounding="True">
-            <Path Canvas.Left="0" Canvas.Top="0"
-                  Data="{StaticResource CornerButtonGeometry}" Style="{StaticResource CornerButtonBorder}" />
-            <Path Canvas.Left="0" Canvas.Top="0"
-                  Data="{StaticResource CornerButtonGeometry}" Style="{StaticResource CornerButtonStyle}" />
-            <Path Canvas.Left="0" Canvas.Top="0"
-                  Data="{StaticResource CornerButtonGeometry}" Style="{StaticResource CornerButtonGradientStyle}" />
-            <Line Canvas.Left="293" Canvas.Top="4"
-                  Style="{StaticResource BottomSeparatorLineStyleA}" />
-            <Line Canvas.Left="294" Canvas.Top="4"
-                  Style="{StaticResource BottomSeparatorLineStyleB}" />
-
-            <Path Canvas.Left="271" Canvas.Top="4"
-                  Data="{StaticResource RightGlowGeometry}" Style="{StaticResource IconGlowStyle}" />
-            <Path Canvas.Left="275" Canvas.Top="10"
-                  Data="{StaticResource LargerIconGeometry}" Style="{StaticResource IconStyle}" />
-
-            <Path Canvas.Left="297" Canvas.Top="4"
-                  Data="{StaticResource RightGlowGeometry}" Style="{StaticResource IconGlowStyle}" />
-            <Path Canvas.Left="301" Canvas.Top="10"
-                  Data="{StaticResource SmallerIconGeometry}" Style="{StaticResource IconStyle}" />
-
-            <Path Canvas.Left="3" Canvas.Top="3"
-                  Data="{StaticResource LeftGlowGeometry}" Style="{StaticResource IconGlowStyle}" />
-            <Path Canvas.Left="13" Canvas.Top="5"
-                  Data="{StaticResource HomeSettingsGeometry}" Style="{StaticResource IconStyle}" />
-            <Image Canvas.Left="60" Source="../Resources/BOT_ICON_ALL.png" />
-        </Canvas>
         <!-- R Arrow -->
-        <Canvas>
-            <Canvas.Style>
-                <Style TargetType="Canvas">
-                    <Setter Property="Right" Value="0" />
-                    <Setter Property="Top" Value="123" />
+        <Image x:Name="Ref" Source="/Controls/Resources/BottomScreenRef.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Height="240" Width="320" d:IsHidden="True" Visibility="Collapsed"/>
+
+        <Image Source="/Controls/Resources/LncArwBtn.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Canvas.Top="85" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="299" >
+            <Image.Effect>
+                <Effects:FolderEffect
+                    ColorA="{Binding Colors.ArrowButton.Shading, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                    ColorB="{Binding Colors.ArrowButton.Main, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"
+                    ColorC="{Binding Colors.ArrowButton.Glow, FallbackValue=#0000FF, UpdateSourceTrigger=PropertyChanged}"
+                    MidpointAB="0.32"
+                    MidpointBC="0.38"
+                    CenterPoint="0.5"
+                    />
+            </Image.Effect>
+        </Image>
+        <Image Source="/Controls/Resources/LncArwIconR_11.png" Canvas.Left="302" Canvas.Top="115" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Left" VerticalAlignment="Center" >
+            <Image.Style>
+                <Style TargetType="Image">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <Effects:FolderEffect
+                                ColorB="{Binding RelativeSource={RelativeSource Self}, FallbackValue=#000000}"
+                                ColorC="{Binding RelativeSource={RelativeSource Self}, FallbackValue=#55bbee}"
+                                CenterPoint="0.25" />
+                        </Setter.Value>
+                    </Setter>
                     <Style.Triggers>
                         <DataTrigger Binding="{markup:Setting Path=Preview_PressedToggle}" Value="True">
-                            <Setter Property="Right" Value="-2" />
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <Effects:FolderEffect
+                                        ColorC="{Binding Path=Colors.Arrow.Pressed}" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Flags.ArrowColor}" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <Effects:FolderEffect
+                                        ColorB="{Binding Colors.Arrow.Border, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"
+                                        ColorC="{Binding Colors.Arrow.Unpressed, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}" />
+                                </Setter.Value>
+                            </Setter>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Canvas.Style>
-            <Path Data="{StaticResource ArrowButtonGeometry}" Style="{StaticResource ArrowButtonStyle}" />
-            <Path Data="{StaticResource ArrowButtonGeometry}" Style="{StaticResource ArrowButtonShadowStrokeStyle}" />
-            <Path Data="{StaticResource ArrowButtonGeometry}" Style="{StaticResource ArrowButtonShadowStyle}" />
-            <Path Canvas.Right="3" Data="{StaticResource ArrowGeometry}" Style="{StaticResource ArrowStyle}" />
+            </Image.Style>
+        </Image>
+        <Canvas x:Name="TopRow" Height="240" Width="320" RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True" >
+            <Image Source="/Controls/Resources/Icons/BOT_ICON_ALL.png" Height="37" Canvas.Left="59" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="-1" />
+            <Image x:Name="TopLeftBtn" Source="/Controls/Resources/BottomCorner/LncPetitBtn_20.png" Width="64" Height="33" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Effect>
+                    <Effects:FolderEffect
+                    ColorA="{Binding Colors.BottomCorner.Border, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"
+                    ColorB="{Binding Colors.BottomCorner.Main, FallbackValue=#0000FF, UpdateSourceTrigger=PropertyChanged}"
+                    ColorC="{Binding Colors.BottomCorner.Highlight, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                    MidpointAB="0.5"
+                    MidpointBC="0.28"
+                    CenterPoint="0.3"
+                    />
+                </Image.Effect>
+            </Image>
+            <Image x:Name="HomeIconHighlight" Source="/Controls/Resources/BottomCorner/LncPetitIconPetit_01_Highlight.png" Height="32" RenderOptions.BitmapScalingMode="NearestNeighbor" Canvas.Left="10" Canvas.Top="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image.Effect>
+                    <Effects:ColorEffect
+                    Color="{Binding Colors.BottomCorner.Highlight, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                />
+                </Image.Effect>
+            </Image>
+            <Image x:Name="HomeIcon" Source="/Controls/Resources/BottomCorner/LncPetitIconPetit_01.png" Width="32" Height="32"  RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="None" Canvas.Left="10" Canvas.Top="1" SnapsToDevicePixels="True" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image.Effect>
+                    <Effects:GradientEffect
+                    Top="{Binding Colors.BottomCorner.IconTop, FallbackValue=#000000, UpdateSourceTrigger=PropertyChanged}"
+                    Bottom="{Binding Colors.BottomCorner.IconBottom, FallbackValue=#FFFFFF, UpdateSourceTrigger=PropertyChanged}"
+                />
+                </Image.Effect>
+            </Image>
+            <Image x:Name="TopRightBtn" Source="/Controls/Resources/BottomCorner/LncPetitBtn_20.png" Width="64" Height="33" RenderOptions.BitmapScalingMode="NearestNeighbor" Canvas.Left="256" FlowDirection="RightToLeft" Stretch="None" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Effect>
+                    <Effects:FolderEffect
+                    ColorA="{Binding Colors.BottomCorner.Border, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"
+                    ColorB="{Binding Colors.BottomCorner.Main, FallbackValue=#0000FF, UpdateSourceTrigger=PropertyChanged}"
+                    ColorC="{Binding Colors.BottomCorner.Highlight, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                    MidpointAB="0.5"
+                    MidpointBC="0.28"
+                    CenterPoint="0.3"
+                    />
+                </Image.Effect>
+            </Image>
+            <Image Source="/Controls/Resources/BottomCorner/IconUpDw_21.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="299" Canvas.Top="8" Width="16" >
+                <Image.Effect>
+                    <Effects:ColorEffect Color="{Binding Colors.BottomCorner.Highlight, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"/>
+                </Image.Effect>
+            </Image>
+            <Image Source="/Controls/Resources/BottomCorner/IconUpDw_2.png" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="299" Canvas.Top="8" Width="16" >
+                <Image.Effect>
+                    <Effects:GradientEffect
+                        Top="{Binding Colors.BottomCorner.IconTop, FallbackValue=#000000, UpdateSourceTrigger=PropertyChanged}"
+                        Bottom="{Binding Colors.BottomCorner.IconBottom, FallbackValue=#FFFFFF, UpdateSourceTrigger=PropertyChanged}"/>
+                </Image.Effect>
+            </Image>
+            <Image Source="/Controls/Resources/BottomCorner/IconUpDw_11.png" Width="16" Canvas.Left="273" Canvas.Top="8" >
+                <Image.Effect>
+                    <Effects:ColorEffect Color="{Binding Colors.BottomCorner.Highlight, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"/>
+                </Image.Effect>
+            </Image>
+            <Image Source="/Controls/Resources/BottomCorner/IconUpDw_1.png" Canvas.Left="273" Canvas.Top="8" Width="16" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                <Image.Effect>
+                    <Effects:GradientEffect
+                        Top="{Binding Colors.BottomCorner.IconTop, FallbackValue=#000000, UpdateSourceTrigger=PropertyChanged}"
+                        Bottom="{Binding Colors.BottomCorner.IconBottom, FallbackValue=#FFFFFF, UpdateSourceTrigger=PropertyChanged}"/>
+                </Image.Effect>
+            </Image>
+            <Image Source="/Controls/Resources/BottomCorner/TopRHighlight1.png" Canvas.Left="293" Canvas.Top="2" Width="1" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.38" >
+                <Image.Effect>
+                    <Effects:ColorEffect Color="{Binding Colors.BottomCorner.Border, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"/>
+                </Image.Effect>
+            </Image>
+            <Image Source="/Controls/Resources/BottomCorner/TopRHighlight2.png" Canvas.Left="294" Canvas.Top="2" Width="1" HorizontalAlignment="Left" VerticalAlignment="Center" Opacity="0.83" >
+                <Image.Effect>
+                    <Effects:ColorEffect Color="{Binding Colors.BottomCorner.Highlight, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"/>
+                </Image.Effect>
+            </Image>
+        </Canvas>
+        <Canvas x:Name="OpenClose" RenderOptions.BitmapScalingMode="NearestNeighbor" SnapsToDevicePixels="True">
+            <Canvas x:Name="OpenButton" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Canvas.Style>
+                    <Style TargetType="Canvas">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <Effects:FolderEffect
+                                    ColorA="{Binding Colors.Open.Pressed, FallbackValue=#787470, UpdateSourceTrigger=PropertyChanged}"
+                                    ColorB="{Binding Colors.Open.Unpressed, FallbackValue=#DFDBD7, UpdateSourceTrigger=PropertyChanged}"
+                                    ColorC="{Binding Colors.Open.Light, FallbackValue=#FFFFF9, UpdateSourceTrigger=PropertyChanged}"
+                                    MidpointAB="0.3"
+                                    MidpointBC="0.41"
+                                    CenterPoint="0.5" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=Flags.OpenCloseColor}" Value="False">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <Effects:FolderEffect
+                                            ColorA="{Binding Colors.Open.Pressed, FallbackValue=#787470, UpdateSourceTrigger=PropertyChanged}"
+                                            ColorB="{Binding Colors.Open.Unpressed, FallbackValue=#DFDBD7, UpdateSourceTrigger=PropertyChanged}"
+                                            ColorC="{Binding Colors.Open.Light, FallbackValue=#FFFFF9, UpdateSourceTrigger=PropertyChanged}"
+                                            MidpointAB="0.3"
+                                            MidpointBC="0.41"
+                                            CenterPoint="0.5" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Canvas.Style>
+                <Image Canvas.Left="304" Canvas.Top="210" Height="32" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonPressed}" />
+                <Image Canvas.Top="210" Height="32" Width="1" Stretch="None" Canvas.Left="23" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{DynamicResource ButtonPressed}" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="288"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-7"/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+                <Image Canvas.Left="106" Canvas.Top="210" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}" BasedOn="{StaticResource CloseOff}">
+                            <Setter Property="Source" Value="/Controls/Resources/BottomButton/LncBtmBtnLine_11_Open.png"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{markup:Setting Path=Preview_PressedToggle}" Value="True">
+                                    <Setter Property="Margin" Value="0,1,0,0"/>
+                                    <Setter Property="Source" Value="/Controls/Resources/BottomButton/LncBtmBtnLine_11_Open2.png"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Image Canvas.Top="210" Height="32" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource ButtonPressed}" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Canvas>
+            <Canvas x:Name="OpenButton_Pressed" Visibility="Collapsed" d:IsHidden="True">
+                <Canvas.Effect>
+                    <Effects:FolderEffect
+                        ColorA="{Binding Colors.Open.Pressed, FallbackValue=#0000FF, UpdateSourceTrigger=PropertyChanged}"
+                        ColorB="{Binding Colors.Open.Unpressed, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"
+                        ColorC="{Binding Colors.Open.Light, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                        MidpointAB="0.3"
+                        MidpointBC="0.41"
+                        CenterPoint="0.5" />
+                </Canvas.Effect>
+                <Image Source="/Controls/Resources/BottomButton/LncBtmBtn_12.png" Canvas.Left="304" Canvas.Top="210" Height="32" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Image Source="/Controls/Resources/BottomButton/LncBtmBtnLine_11_Open.png" Canvas.Left="106" Canvas.Top="210" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource CloseOff}" />
+                <Image Source="/Controls/Resources/BottomButton/LncBtmBtn_12.png" Canvas.Top="210" Height="32" Width="1" Stretch="None" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="23" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="288"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-7"/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+                <Image Source="/Controls/Resources/BottomButton/LncBtmBtn_12.png" Canvas.Top="210" Height="32" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Center" Width="16" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Canvas>
+            <Canvas Style="{DynamicResource CloseOff}" x:Name="CloseButton" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Canvas.Effect>
+                    <Effects:FolderEffect
+                        ColorA="{Binding Colors.Close.Pressed, FallbackValue=#000000, UpdateSourceTrigger=PropertyChanged}"
+                        ColorB="{Binding Colors.Close.Unpressed, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                        ColorC="{Binding Colors.Close.Light, FallbackValue=#FFFFFF, UpdateSourceTrigger=PropertyChanged}"
+                        MidpointAB="0.3"
+                        MidpointBC="0.41"
+                        CenterPoint="0.5" />
+                </Canvas.Effect>
+                <Image Source="/Controls/Resources/BottomButton/LncBtmBtn_11.png" Canvas.Top="210" Height="32" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+                <Image Source="/Controls/Resources/BottomButton/LncBtmBtnLine_11_Close.png" Canvas.Left="102" Canvas.Top="210" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <Image Source="/Controls/Resources/BottomButton/LncBtmBtn_11.png" Canvas.Top="210" Height="32" Width="1" Stretch="None" Canvas.Left="23" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="86"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="-7"/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Canvas>
+            <Image x:Name="OpenGlow" Source="/Controls/Resources/BottomButton/Open.png" Width="44" Canvas.Left="137" Canvas.Top="220" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}" BasedOn="{StaticResource CloseOn}">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <Effects:ColorEffect
+                                    Color="{Binding Colors.Open.TextGlow, FallbackValue=#FFFFF9, UpdateSourceTrigger=PropertyChanged}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{markup:Setting Path=Preview_PressedToggle}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Flags.OpenCloseColor}" Value="False">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <Effects:ColorEffect
+                                            Color="{Binding ., FallbackValue=#FFFFF9}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image x:Name="OpenText" Source="/Controls/Resources/BottomButton/Open.png" Width="44" Canvas.Left="137" Canvas.Top="219" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}" BasedOn="{StaticResource CloseOn}">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <Effects:ColorEffect
+                                    Color="{Binding Colors.Open.TextUnpressed, FallbackValue=#4B4844, UpdateSourceTrigger=PropertyChanged}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{markup:Setting Path=Preview_PressedToggle}" Value="True">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <Effects:ColorEffect
+                                            Color="{Binding ., FallbackValue=#FFFFF9}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Flags.OpenCloseColor}" Value="False">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <Effects:ColorEffect
+                                            Color="{Binding ., FallbackValue=#4B4844}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image x:Name="ResumeGlow" Source="/Controls/Resources/BottomButton/Resume.png" Canvas.Left="165" Canvas.Top="220" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}" BasedOn="{StaticResource CloseOff}">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <Effects:ColorEffect
+                                    Color="{Binding Colors.Open.TextGlow, FallbackValue=#FDFCF8, UpdateSourceTrigger=PropertyChanged}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{markup:Setting Path=Preview_PressedToggle}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Flags.OpenCloseColor}" Value="False">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <Effects:ColorEffect
+                                            Color="{Binding ., FallbackValue=#FDFCF8}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image x:Name="ResumeText" Source="/Controls/Resources/BottomButton/Resume.png" Canvas.Left="165" Canvas.Top="219" HorizontalAlignment="Center" VerticalAlignment="Top" >
+                <Image.Style>
+                    <Style TargetType="Image" BasedOn="{StaticResource CloseOff}">
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <Effects:ColorEffect
+                    Color="{Binding Colors.Open.TextUnpressed, FallbackValue=#FFFFFF, UpdateSourceTrigger=PropertyChanged}" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{markup:Setting Path=Preview_PressedToggle}" Value="True">
+                                <Setter Property="Margin" Value="0,1,0,0"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <Effects:ColorEffect
+                            Color="{Binding Path=Colors.Open.TextPressed}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=Flags.OpenCloseColor}" Value="False">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <Effects:ColorEffect
+                            Color="{Binding ., FallbackValue=#FFFF00}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <Image x:Name="CloseText" Source="/Controls/Resources/BottomButton/Close.png" Canvas.Left="18" Canvas.Top="219" HorizontalAlignment="Center" VerticalAlignment="Top" Style="{StaticResource CloseOff}" >
+                <Image.Effect>
+                    <Effects:ColorEffect
+                        Color="{Binding Colors.Close.TextUnpressed, FallbackValue=#FFFFFF, UpdateSourceTrigger=PropertyChanged}"
+                    />
+                </Image.Effect>
+            </Image>
         </Canvas>
     </Canvas>
 </UserControl>

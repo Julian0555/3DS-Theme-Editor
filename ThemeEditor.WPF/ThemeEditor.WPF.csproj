@@ -94,6 +94,10 @@
     <Compile Include="CrashWindow.xaml.cs">
       <DependentUpon>CrashWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Effects\RecolorEffect.cs" />
+    <Compile Include="Effects\GradientEffect.cs" />
+    <Compile Include="Effects\ColorEffect.cs" />
+    <Compile Include="Effects\FolderEffect.cs" />
     <Compile Include="Experimental\CWAV\CWAVBlock.cs" />
     <Compile Include="Experimental\CWAV\CWAVFile.cs" />
     <Compile Include="Experimental\CWAV\CWAVKind.cs" />
@@ -110,6 +114,7 @@
       <DependentUpon>PreviewOptionsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Templating\BooleanMultiConverter.cs" />
+    <Compile Include="Templating\ColorStringConverter.cs" />
     <Compile Include="Templating\EscapeStringUnderscoreCoverter.cs" />
     <Compile Include="Templating\MathConverter.cs" />
     <Compile Include="Templating\NullConverter.cs" />
@@ -321,7 +326,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Resource Include="Controls\Resources\BottomCorner\LncPetitBtn_20.png" />
     <Resource Include="Effects\FxBin\WarpEffect.ps" />
+    <Resource Include="Effects\FxBin\FolderEffect.ps" />
+    <Resource Include="Effects\FxBin\ColorEffect.ps" />
+    <Resource Include="Effects\FxBin\GradientEffect.ps" />
+    <Resource Include="Effects\FxBin\RecolorEffect.ps" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -390,9 +400,93 @@
     <Resource Include="Resources\DROP_FOLDERCLOSED.png" />
     <Resource Include="Resources\DROP_FOLDEROPEN.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Effects\FxBin\FolderEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\LncFile_13.png" />
+    <Resource Include="Controls\Resources\LncFolderIn_11.png" />
+    <Resource Include="Controls\Resources\LncFolderIn_13.png" />
+    <Resource Include="Controls\Resources\LncFolder_11.png" />
+    <Resource Include="Controls\Resources\LncFolder_13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomScreenRef.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomCorner\LncPetitIconPetit_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Effects\FxBin\ColorEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Effects\FxBin\GradientEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomCorner\LncPetitIconPetit_01_Highlight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomButton\LncBtmBtn_11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomButton\BgLgt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomButton\LncBtmBtnLine_11_Open.png" />
+    <Resource Include="Controls\Resources\BottomButton\LncBtmBtnLine_11_Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomButton\Close.png" />
+    <Resource Include="Controls\Resources\BottomButton\Resume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Effects\FxBin\RecolorEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\Icons\IcnCave_21.png" />
+    <Resource Include="Controls\Resources\Icons\IcnCherry_11.png" />
+    <Resource Include="Controls\Resources\Icons\IcnFrd_21.png" />
+    <Resource Include="Controls\Resources\Icons\IcnNews_21.png" />
+    <Resource Include="Controls\Resources\Icons\IcnSpider_21.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomCorner\IconUpDw_2.png" />
+    <Resource Include="Controls\Resources\BottomCorner\IconUpDw_21.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomCorner\IconUpDw_1.png" />
+    <Resource Include="Controls\Resources\BottomCorner\IconUpDw_11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomCorner\TopRHighlight1.png" />
+    <Resource Include="Controls\Resources\BottomCorner\TopRHighlight2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\Icons\BOT_ICON_ALL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\LncArwBtn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\LncArwIconR_11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomButton\Open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomButton\LncBtmBtn_12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\BottomButton\LncBtmBtnLine_11_Close2.png" />
+    <Resource Include="Controls\Resources\BottomButton\LncBtmBtnLine_11_Open2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe" /T ps_2_0 /E main /Fo"$(ProjectDir)Effects\FxBin\WarpEffect.ps" "$(ProjectDir)Effects\FxBin\WarpEffect.fx"</PreBuildEvent>
+    <PreBuildEvent>"C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe" /T ps_2_0 /E main /Fo"$(ProjectDir)Effects\FxBin\WarpEffect.ps" "$(ProjectDir)Effects\FxBin\WarpEffect.fx"
+"C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe" /T ps_2_0 /E main /Fo"$(ProjectDir)Effects\FxBin\FolderEffect.ps" "$(ProjectDir)Effects\FxBin\FolderEffect.fx"
+"C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe" /T ps_2_0 /E main /Fo"$(ProjectDir)Effects\FxBin\ColorEffect.ps" "$(ProjectDir)Effects\FxBin\ColorEffect.fx"
+"C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe" /T ps_2_0 /E main /Fo"$(ProjectDir)Effects\FxBin\GradientEffect.ps" "$(ProjectDir)Effects\FxBin\GradientEffect.fx"
+"C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe" /T ps_2_0 /E main /Fo"$(ProjectDir)Effects\FxBin\RecolorEffect.ps" "$(ProjectDir)Effects\FxBin\RecolorEffect.fx"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>

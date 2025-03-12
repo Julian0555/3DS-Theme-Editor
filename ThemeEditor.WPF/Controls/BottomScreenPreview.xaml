@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="ThemeEditor.WPF.Controls.BottomScreenPreview"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,6 +8,7 @@
              xmlns:renderers="clr-namespace:ThemeEditor.WPF.Controls.Renderers"
              xmlns:templating="clr-namespace:ThemeEditor.WPF.Templating"
              xmlns:properties="clr-namespace:ThemeEditor.WPF.Properties"
+             xmlns:Effects="clr-namespace:ThemeEditor.WPF.Effects" x:Class="ThemeEditor.WPF.Controls.BottomScreenPreview"
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="320">
     <UserControl.Resources>
@@ -88,15 +89,20 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Canvas ClipToBounds="True"
-            DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Path=Theme}"
+            DataContext="{Binding Theme, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
             Width="320px" Height="240px">
         <!-- Background -->
-        <renderers:BottomWallpaperRenderer Theme="{Binding Path=.}" IsEnabled="True" />
+        <!-- Background -->
+        <!-- Background -->
+        <!-- Background -->
+        <Image x:Name="RefOverlay" Source="/Controls/Resources/BottomScreenRef.png" Height="240" Width="320" RenderOptions.BitmapScalingMode="NearestNeighbor" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center" d:IsHidden="True"/>
+        <!-- Background -->
+        <renderers:BottomWallpaperRenderer Theme="{Binding .}" IsEnabled="True" />
         <!-- No Cart -->
         <Canvas
-            Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_CartEnable, Converter={StaticResource BooleanToVisibilityConverter}}"
-            Canvas.Left="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_CartX , Converter={StaticResource ColumnSelector}}"
-            Canvas.Top="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_CartY, Converter={StaticResource RowSelector}}">
+            Visibility="{Binding Preview_Main_CartEnable, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}"
+            Canvas.Left="{Binding Preview_Main_CartX, Converter={StaticResource ColumnSelector}, Source={x:Static properties:Settings.Default}}"
+            Canvas.Top="{Binding Preview_Main_CartY, Converter={StaticResource RowSelector}, Source={x:Static properties:Settings.Default}}">
             <Canvas Style="{StaticResource PreviewItemShadowCaster}">
                 <Path Style="{StaticResource NoCartStyleBack}" Data="{StaticResource FileGeometry}" />
                 <Path Style="{StaticResource NoCartStyleFore}" Data="{StaticResource NoCartGeometryFore}" />
@@ -104,24 +110,24 @@
         </Canvas>
         <!-- File -->
         <Canvas
-            Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_FileEnable, Converter={StaticResource BooleanToVisibilityConverter}}"
-            Canvas.Left="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_FileX , Converter={StaticResource ColumnSelector}}"
-            Canvas.Top="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_FileY, Converter={StaticResource RowSelector}}">
+            Visibility="{Binding Preview_Main_FileEnable, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}"
+            Canvas.Left="{Binding Preview_Main_FileX, Converter={StaticResource ColumnSelector}, Source={x:Static properties:Settings.Default}}"
+            Canvas.Top="{Binding Preview_Main_FileY, Converter={StaticResource RowSelector}, Source={x:Static properties:Settings.Default}}">
             <Canvas Style="{StaticResource PreviewFileShadowCaster}">
                 <Path Style="{StaticResource FileStyleBack}" Data="{StaticResource FileGeometry}" />
             </Canvas>
             <Path Style="{StaticResource FileStyleFore}" Data="{StaticResource FileGeometry}" />
             <Path Data="{StaticResource FileLabelGeometry}">
                 <Path.Fill>
-                    <ImageBrush ImageSource="{Binding Path=Info.LargeIcon.Bitmap}" Stretch="Fill" />
+                    <ImageBrush ImageSource="{Binding Info.LargeIcon.Bitmap}" Stretch="Fill" />
                 </Path.Fill>
             </Path>
         </Canvas>
         <!-- Folder -->
         <Canvas
-            Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_FolderEnable, Converter={StaticResource BooleanToVisibilityConverter}}"
-            Canvas.Left="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_FolderX , Converter={StaticResource ColumnSelector}}"
-            Canvas.Top="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_FolderY, Converter={StaticResource RowSelector}}">
+            Visibility="{Binding Preview_Main_FolderEnable, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}"
+            Canvas.Left="{Binding Preview_Main_FolderX, Converter={StaticResource ColumnSelector}, Source={x:Static properties:Settings.Default}}"
+            Canvas.Top="{Binding Preview_Main_FolderY, Converter={StaticResource RowSelector}, Source={x:Static properties:Settings.Default}}">
             <Canvas Style="{StaticResource PreviewFolderShadowCaster}">
                 <Path Style="{StaticResource FolderStyleBackClosed}" Data="{StaticResource FolderGeometryBackClosed}" />
             </Canvas>
@@ -137,11 +143,11 @@
         </Canvas>
         <!-- Cursor -->
         <Canvas
-            Canvas.Left="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_CursorX , Converter={StaticResource ColumnSelector}}"
-            Canvas.Top="{Binding Source={x:Static properties:Settings.Default}, Path=Preview_Main_CursorY, Converter={StaticResource RowSelector}}">
+            Canvas.Left="{Binding Preview_Main_CursorX, Converter={StaticResource ColumnSelector}, Source={x:Static properties:Settings.Default}}"
+            Canvas.Top="{Binding Preview_Main_CursorY, Converter={StaticResource RowSelector}, Source={x:Static properties:Settings.Default}}">
             <Canvas.Visibility>
                 <MultiBinding Converter="{StaticResource BooleanOrConverter}">
-                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=UserControl}" Path="HideCursor"
+                    <Binding RelativeSource="{RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}" Path="HideCursor"
                              Converter="{StaticResource BooleanNegateConverter}" />
                     <Binding Source="{x:Static properties:Settings.Default}" Path="Preview_Main_CursorEnable" />
                 </MultiBinding>
@@ -149,6 +155,29 @@
             <Path Style="{StaticResource CursorStyleSolid}" Data="{StaticResource CursorGeometry}" />
             <Path Style="{StaticResource CursorStyleGlow}" Data="{StaticResource CursorGeometry}" />
         </Canvas>
-
+        <Canvas x:Name="Folder" Height="240" Width="320">
+            <Image Canvas.Left="26" Source="/Controls/Resources/LncFolder_13.png" Canvas.Top="156" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Effect>
+                    <Effects:FolderEffect
+                    ColorA="{Binding Colors.Folder.Dark, FallbackValue=#0000FF, UpdateSourceTrigger=PropertyChanged}"
+                    ColorB="{Binding Colors.Folder.Main, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"
+                    ColorC="{Binding Colors.Folder.Light, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                    MidpointAB="0.4"
+                    MidpointBC="0.39"
+                    />
+                </Image.Effect>
+            </Image>
+            <Image Source="/Controls/Resources/LncFile_13.png" Canvas.Left="26" Canvas.Top="150" RenderOptions.BitmapScalingMode="NearestNeighbor" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Effect>
+                    <Effects:FolderEffect
+                        ColorA="{Binding Colors.File.Dark, FallbackValue=#FF0000, UpdateSourceTrigger=PropertyChanged}"
+                        ColorB="{Binding Colors.File.Main, FallbackValue=#00FF00, UpdateSourceTrigger=PropertyChanged}"
+                        ColorC="{Binding Colors.File.Light, FallbackValue=#0000FF, UpdateSourceTrigger=PropertyChanged}"
+                        MidpointAB="0.2"
+                        MidpointBC="0.4"
+                    />
+                </Image.Effect>
+            </Image>
+        </Canvas>
     </Canvas>
 </UserControl>
