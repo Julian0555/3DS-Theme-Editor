@@ -480,6 +480,10 @@
     <Resource Include="Controls\Resources\BottomButton\LncBtmBtnLine_11_Close2.png" />
     <Resource Include="Controls\Resources\BottomButton\LncBtmBtnLine_11_Open2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\Resources\2025-03-15_11-00-27.408_bot.bmp" />
+    <Resource Include="Controls\Resources\2025-03-15_11-00-45.271_bot.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"C:\Program Files (x86)\Windows Kits\8.1\bin\x86\fxc.exe" /T ps_2_0 /E main /Fo"$(ProjectDir)Effects\FxBin\WarpEffect.ps" "$(ProjectDir)Effects\FxBin\WarpEffect.fx"

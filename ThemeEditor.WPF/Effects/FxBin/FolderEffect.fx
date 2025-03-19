@@ -15,7 +15,7 @@ float CenterPoint : register(c5) = 0.5; // New adjustable center point
 
 float4 main(float2 uv : TEXCOORD) : COLOR
 {
-    float Gamma = 1;
+    //float Gamma = 1;
     // Fetch texture color
     float4 texColor = tex2D(Input, uv);
     
@@ -26,9 +26,9 @@ float4 main(float2 uv : TEXCOORD) : COLOR
     float greyscale = texColor.r / texColor.a;
     
     // Apply gamma correction
-    float3 linearA = pow(ColorA.rgb, Gamma);
+    /*float3 linearA = pow(ColorA.rgb, Gamma);
     float3 linearB = pow(ColorB.rgb, Gamma);
-    float3 linearC = pow(ColorC.rgb, Gamma);
+    float3 linearC = pow(ColorC.rgb, Gamma);*/
     
     float t;
     float3 result;
@@ -36,13 +36,13 @@ float4 main(float2 uv : TEXCOORD) : COLOR
     {
         t = greyscale / CenterPoint;
         t = pow(t, log(0.5) / log(MidpointAB));
-        result = lerp(linearA, linearB, t);
+        result = lerp(ColorA.rgb, ColorB.rgb, t);
     }
     else
     {
         t = (greyscale - CenterPoint) / (1.0 - CenterPoint);
         t = pow(t, log(0.5) / log(1.0 - MidpointBC));
-        result = lerp(linearB, linearC, t);
+        result = lerp(ColorB.rgb, ColorC.rgb, t);
     }
     result *= texColor.a;
     return float4(result, texColor.a);
